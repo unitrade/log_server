@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-server
+spec:
+  selector:
+    matchLabels:
+      app: log-server
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: log-server
+    spec:
+      containers:
+        - name: log-server
+          image: hillel/log_server
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
