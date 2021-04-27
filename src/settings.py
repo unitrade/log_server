@@ -59,7 +59,7 @@ class LoggerConfig:
             "to_info_file": {
                 "handlers": ["console", "file_info"],
                 "level": "INFO",
-                "propagate": True,
+                "propagate": False,
             },
             "to_error_file": {
                 "handlers": ["console", "file_error"],

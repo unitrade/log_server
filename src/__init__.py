@@ -1,21 +1,19 @@
 import logging
+import os
 from logging.config import dictConfig
+
 from flask import Flask, render_template
 
 from config.config import ProductionConfig, DevelopmentConfig, TestingConfig
 from src.settings import LoggerConfig
 
 
-def create_app():
+def create_app(config: object):
     app = Flask(__name__)
 
-    # Check environment and set config
-    if app.config["ENV"] == "production":
-        app.config.from_object(ProductionConfig())
-    elif app.config["ENV"] == "development":
-        app.config.from_object(DevelopmentConfig())
-    else:
-        app.config.from_object(TestingConfig())
+    # Set Flask config from object
+    app.config.from_object(config)
+
     print(f'ENV is set to: {app.config["ENV"]}')
 
     # Set logger config
@@ -30,7 +28,7 @@ def create_app():
         logger_fail.error("Error")
         return render_template("index.html")
 
-    @app.route('/hello')
+    @app.route('/api/v1/hello')
     def hello_world():
         logger_success.info("OK Hello")
         logger_fail.error("Error Hello")
@@ -39,4 +37,10 @@ def create_app():
     return app
 
 
-app = create_app()
+# Check environment and set config
+if os.environ["FLASK_ENV"] == "production":
+    app = create_app(ProductionConfig())
+elif os.environ["FLASK_ENV"] == "development":
+    app = create_app(DevelopmentConfig())
+else:
+    app = create_app(TestingConfig())
