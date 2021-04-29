@@ -111,6 +111,8 @@ def get_events():
                         or filters[items] == "debug" \
                         or filters[items] == "warning" \
                         or filters[items] == "error":
+                    if not result:
+                        result = log
                     for dicts in log:
                         if filters[items] not in dicts["level"].lower():
                             result.remove(dicts)
