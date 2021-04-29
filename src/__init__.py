@@ -2,10 +2,14 @@ import logging
 import os
 from logging.config import dictConfig
 
-from flask import Flask, render_template
+from flask import Flask
 
 from config.config import ProductionConfig, DevelopmentConfig, TestingConfig
 from src.settings import LoggerConfig
+from dotenv import load_dotenv
+
+# Load the environment variables from .env file
+load_dotenv(".env")
 
 
 def create_app(config: object):
@@ -13,26 +17,12 @@ def create_app(config: object):
 
     # Set Flask config from object
     app.config.from_object(config)
+    app.logger.info(f'ENV is set to: {app.config["ENV"]}')
 
-    print(f'ENV is set to: {app.config["ENV"]}')
+    # print(f'ENV is set to: {app.config["ENV"]}')
 
     # Set logger config
     logging.config.dictConfig(LoggerConfig.dictConfig)
-
-    logger_success = logging.getLogger("to_info_file")
-    logger_fail = logging.getLogger("to_error_file")
-
-    @app.route('/')
-    def index():
-        logger_success.info("OK")
-        logger_fail.error("Error")
-        return render_template("index.html")
-
-    @app.route('/api/v1/hello')
-    def hello_world():
-        logger_success.info("OK Hello")
-        logger_fail.error("Error Hello")
-        return render_template("hello.html")
 
     return app
 
@@ -44,3 +34,5 @@ elif os.environ["FLASK_ENV"] == "development":
     app = create_app(DevelopmentConfig())
 else:
     app = create_app(TestingConfig())
+
+import src.routes
