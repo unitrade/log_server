@@ -17,4 +17,4 @@ spec:
           image: hillel/log_server
           imagePullPolicy: Never
           ports:
-            - containerPort: 5000
+            - containerPort: 8000

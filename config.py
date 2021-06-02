@@ -1,3 +1,35 @@
+from dotenv import load_dotenv
+
+# Load the environment variables from .env file
+load_dotenv(".env")
+
+
+class BaseConfig:
+    DEBUG = False
+    TESTING = False
+    HOST = "0.0.0.0"
+    PORT = 8000
+    CONTENT_LENGTH = 1048576
+
+    @property
+    def SERVER_NAME(self):
+        return f"{self.HOST}:{self.PORT}"
+
+
+class ProductionConfig(BaseConfig):
+    pass
+
+
+class DevelopmentConfig(BaseConfig):
+    DEBUG = True
+    CONTENT_LENGTH = 2048
+
+
+class TestingConfig(BaseConfig):
+    TESTING = True
+    CONTENT_LENGTH = 1024
+
+
 class LoggerConfig:
     dictConfig = {
         "version": 1,
