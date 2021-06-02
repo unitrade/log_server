@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <meta name="description" content={{description}}>
+    <link rel="shortcut icon" href="../static/img/log.ico">
+    {% block css %}{% endblock %}
+</head>
+
+<body class="d-flex flex-column h-100">
+{% include 'navigation.html' %}
+{% block content %}{% endblock %}
+</body>
+
+</html>
